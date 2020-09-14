@@ -1,7 +1,7 @@
 import React from 'react';
 
 const UserInput = ({ onInputChange, onButtonSubmit }) => {
-    return (
+    return ( 
         <div>
             <p className="f3">
                 {'This magic brain can detect faces from your pictures. Give it a try.'}
