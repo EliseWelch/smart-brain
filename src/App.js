@@ -10,10 +10,6 @@ import FaceRecognition from './Components/FaceRecognition/FaceRecognition';
 import './App.css';
 
 
-const app = new Clarifai.App({
-  apiKey: 'b145dce7256d49dbbd0ddb2d239a71e6'
-});
-
 const initalState = {
   input: '',
   imageUrl: '',
@@ -67,10 +63,15 @@ class App extends Component {
   }
 
   onButtonSubmit = () => {
-    this.setState({imageUrl: this.state.input})
-    app.models.predict(
-        Clarifai.FACE_DETECT_MODEL,
-        this.state.input)
+    this.setState({imageUrl: this.state.input});
+      fetch('http://localhost:3000/imageurl', {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          input: this.state.input
+        })
+      })
+       .then(response => response.json())
        .then(response => {
          if (response) {
            fetch('http://localhost:3000/image', {
@@ -84,6 +85,7 @@ class App extends Component {
             .then(count => {
               this.setState(Object.assign(this.state.user, { entries: count }))
             })
+            .catch(console.log)
          }
          this.displayFaceBox(this.calculateFaceLocation(response))
        })
